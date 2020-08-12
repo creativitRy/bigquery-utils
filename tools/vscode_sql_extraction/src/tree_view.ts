@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import {Highlighter} from './highlighter';
 import {SqlExtractionRunner} from './sql_extraction_runner';
 import {Query, QueryFragment, locationToRange, toCombinedString} from './query';
+import {performance} from 'perf_hooks';
 
 /**
  * Provides ordering in the tree panel.
@@ -47,11 +48,13 @@ export class SqlExtractionProvider
       }
 
       try {
+        const prev = performance.now();
         this.queries = await this.sqlExtractor.extractFromDirectory(
           this.workspaceRoot,
           progress,
           token
         );
+        console.log(performance.now() - prev);
       } catch (error) {
         return;
       }

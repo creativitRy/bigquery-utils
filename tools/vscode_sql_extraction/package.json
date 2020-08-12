@@ -11,6 +11,7 @@
   },
   "license": "Apache-2.0",
   "engines": {
+    "node": ">=8.5.0",
     "vscode": "^1.45.0"
   },
   "categories": [
