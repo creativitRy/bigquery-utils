@@ -9,7 +9,7 @@ export class AutoFixerRunner {
   constructor(private execPath: string) {}
 
   /**
-   * execute
+   * execute Auto Fixer to analyze [query].
    */
   public analyze(
     query: string,
@@ -19,7 +19,11 @@ export class AutoFixerRunner {
     }>,
     token: CancellationToken
   ): Promise<QueryFix[]> {
-    return this.execute([query], progress, token);
+    return this.execute(
+      ['-m', 'fo', '-o', 'json', '-p', 'sql-gravity-internship', query],
+      progress,
+      token
+    );
   }
 
   private execute(
@@ -45,7 +49,7 @@ export class AutoFixerRunner {
           if (!process.killed && code === 0) {
             let fixes = JSON.parse(json);
             if (!Array.isArray(fixes)) {
-              // temporarily fix output payload not being in an array
+              // treat all output payload as an array
               fixes = [fixes];
             }
             resolve(fixes);
